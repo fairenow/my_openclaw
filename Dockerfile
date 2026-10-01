@@ -60,4 +60,6 @@ ENV NODE_ENV=production
 USER node
 
 ENTRYPOINT ["tini", "-s", "--"]
-CMD ["sh", "-lc", "node openclaw.mjs gateway --bind lan --port ${PORT:-18789}"]
+# TC Remote uses OpenClaw's OpenAI-compatible agent endpoint over Railway's
+# private network. Enable it idempotently before starting the Gateway.
+CMD ["sh", "-lc", "node openclaw.mjs config set gateway.http.endpoints.chatCompletions.enabled true && exec node openclaw.mjs gateway --bind lan --port ${PORT:-18789}"]
