@@ -60,6 +60,4 @@ ENV NODE_ENV=production
 USER node
 
 ENTRYPOINT ["tini", "-s", "--"]
-# Railway is a headless/server deployment, so initialize the minimum gateway
-# configuration idempotently on every boot before starting the service.
-CMD ["sh", "-lc", "node openclaw.mjs config set gateway.mode local && node openclaw.mjs config set gateway.http.endpoints.chatCompletions.enabled true && exec node openclaw.mjs gateway --bind lan --port ${PORT:-18789}"]
+CMD ["node", "scripts/railway-openclaw-start.mjs"]
