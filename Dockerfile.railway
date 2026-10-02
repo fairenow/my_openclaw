@@ -64,8 +64,5 @@ RUN chown -R node:node /app \
 ENV NODE_ENV=production
 USER node
 
-# Railway injects PORT at runtime. OpenClaw's default is loopback, so bind to
-# LAN/0.0.0.0 for Railway private/public networking. TC Remote uses the
-# OpenAI-compatible agent endpoint, which is enabled idempotently on startup.
 ENTRYPOINT ["tini", "-s", "--"]
-CMD ["sh", "-lc", "node openclaw.mjs config set gateway.http.endpoints.chatCompletions.enabled true && exec node openclaw.mjs gateway --bind lan --port ${PORT:-18789}"]
+CMD ["node", "scripts/railway-openclaw-start.mjs"]
